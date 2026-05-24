@@ -1,0 +1,24 @@
+# macOS
+.DS_Store
+
+# Loose source PNGs / screenshots not used by the site (saves ~40 MB)
+/image1.png
+/image3.png
+/image4.png
+/image5.png
+/image6.png
+/image7.png
+/image8.png
+/image9.png
+/image10.png
+/image11.png
+/image12.png
+/Image13.png
+/Image14.png
+/Image15.png
+/Image16.png
+/hanmin bang.jpg
+/스크린샷*
+
+# Claude workspace
+/.claude/
