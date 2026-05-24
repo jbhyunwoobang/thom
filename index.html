@@ -251,27 +251,34 @@ html[data-mode="day"]   .bg-img { filter: brightness(1.02) saturate(1.04); }
   cursor: pointer;
   pointer-events: all;
 }
-.hs-num text {
+/* Dot-style hotspot — a warm-white pulsing pearl with a soft halo. */
+.hs-num .hs-dot {
   fill: rgba(255,248,228,0.97);
-  font-family: 'Cinzel', 'Cormorant Garamond', Georgia, serif;
-  font-size: 82px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  font-variant-numeric: lining-nums;
-  font-feature-settings: 'lnum' 1;
-  text-anchor: middle;
-  dominant-baseline: middle;
-  paint-order: stroke;
-  stroke: rgba(0,0,0,0.6);
-  stroke-width: 5;
-  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.9));
-  transition: font-size 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s ease;
+  stroke: rgba(0,0,0,0.5);
+  stroke-width: 2;
+  r: 30;
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.85)) drop-shadow(0 0 10px rgba(255,225,160,0.45));
+  transition: r 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s ease;
+  animation: hs-dot-pulse 2.6s ease-in-out infinite alternate;
 }
-.hs-num:hover text {
-  font-size: 104px;
-  filter: drop-shadow(0 6px 22px rgba(0,0,0,0.95)) drop-shadow(0 0 14px rgba(255,240,200,0.6));
+.hs-num .hs-dot-ring {
+  fill: none;
+  stroke: rgba(255,235,180,0.55);
+  stroke-width: 2;
+  r: 44;
+  opacity: 0.0;
+  transition: opacity 0.25s ease, r 0.25s ease;
 }
-.hs-num:active text { font-size: 72px; }
+.hs-num:hover .hs-dot {
+  r: 38;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.92)) drop-shadow(0 0 18px rgba(255,235,180,0.75));
+}
+.hs-num:hover .hs-dot-ring { opacity: 0.9; r: 56; }
+.hs-num:active .hs-dot { r: 26; }
+@keyframes hs-dot-pulse {
+  0%   { filter: drop-shadow(0 6px 16px rgba(0,0,0,0.85)) drop-shadow(0 0 8px  rgba(255,225,160,0.35)); }
+  100% { filter: drop-shadow(0 6px 16px rgba(0,0,0,0.85)) drop-shadow(0 0 16px rgba(255,235,180,0.70)); }
+}
 /* Invisible polygon click areas (used inside rooms/sub-views for object hotspots) */
 .hs-poly {
   fill: rgba(255,255,255,0.001);
@@ -1043,13 +1050,15 @@ html[data-mode="day"]   #daynight-toggle .dn-moon { display: none; }
   }
   .bg-img img { object-fit: contain; }
 
-  /* Hotspot numbers and ? marks need to be larger and finger-tappable on touch. */
-  .hs-num text     { font-size: 110px; stroke-width: 6; }
-  .hs-q   text     { font-size: 102px; stroke-width: 6; }
+  /* Hotspot dots and ? marks need to be larger and finger-tappable on touch. */
+  .hs-num .hs-dot      { r: 44; stroke-width: 3; }
+  .hs-num .hs-dot-ring { r: 64; stroke-width: 3; }
+  .hs-q   text         { font-size: 102px; stroke-width: 6; }
   /* Disable :hover scale animations (they get stuck on touch) — use a soft active scale instead. */
-  .hs-num:hover text, .hs-q:hover text { font-size: 110px; }
-  .hs-num:active text { font-size: 96px; }
-  .hs-q:active   text { font-size: 92px; }
+  .hs-num:hover .hs-dot { r: 50; }
+  .hs-num:active .hs-dot { r: 38; }
+  .hs-q:hover text { font-size: 102px; }
+  .hs-q:active text { font-size: 92px; }
 
   /* Hide the centered "THE HOUSE OF MEMORY" header on mobile — it overlaps the
      language toggle and is redundant with the THOM logo. */
@@ -1087,7 +1096,8 @@ html[data-mode="day"]   #daynight-toggle .dn-moon { display: none; }
   .nav-logo { font-size: 14px; letter-spacing: 0.18em; }
   .nav-about { font-size: 12px; }
   #lang-toggle { left: 84px; }
-  .hs-num text { font-size: 124px; }
+  .hs-num .hs-dot      { r: 52; }
+  .hs-num .hs-dot-ring { r: 74; }
   .hs-q   text { font-size: 116px; }
 }
 </style>
@@ -1197,10 +1207,10 @@ html[data-mode="day"]   #daynight-toggle .dn-moon { display: none; }
         <ellipse cx="1286" cy="432" rx="140" ry="80" fill="#ffc870" opacity="0.45" style="filter: blur(34px);"/>
         <ellipse cx="1286" cy="432" rx="70"  ry="42" fill="#ffe4a8" opacity="0.55" style="filter: blur(14px);"/>
       </g>
-      <g class="hs-num" onclick="goToRoom(1)"><text x="922" y="842">1</text></g>
-      <g class="hs-num" onclick="showSubView('screen-garden')"><text x="614" y="648">2</text></g>
-      <g class="hs-num" onclick="goToRoom(3)"><text x="634" y="324">3</text></g>
-      <g class="hs-num" onclick="goToRoom(4)"><text x="1286" y="432">4</text></g>
+      <g class="hs-num" onclick="goToRoom(1)"><circle class="hs-dot-ring" cx="922" cy="842"/><circle class="hs-dot" cx="922" cy="842"/></g>
+      <g class="hs-num" onclick="showSubView('screen-garden')"><circle class="hs-dot-ring" cx="614" cy="648"/><circle class="hs-dot" cx="614" cy="648"/></g>
+      <g class="hs-num" onclick="goToRoom(3)"><circle class="hs-dot-ring" cx="634" cy="324"/><circle class="hs-dot" cx="634" cy="324"/></g>
+      <g class="hs-num" onclick="goToRoom(4)"><circle class="hs-dot-ring" cx="1286" cy="432"/><circle class="hs-dot" cx="1286" cy="432"/></g>
     </svg>
   </div>
 
@@ -1243,10 +1253,10 @@ html[data-mode="day"]   #daynight-toggle .dn-moon { display: none; }
         <ellipse cx="1248" cy="324" rx="140" ry="80" fill="#ffc870" opacity="0.45" style="filter: blur(34px);"/>
         <ellipse cx="1248" cy="324" rx="70"  ry="42" fill="#ffe4a8" opacity="0.55" style="filter: blur(14px);"/>
       </g>
-      <g class="hs-num" onclick="goToRoom(1)"><text x="1632" y="540">1</text></g>
-      <g class="hs-num" onclick="showSubView('screen-garden')"><text x="1190" y="670">2</text></g>
-      <g class="hs-num" onclick="goToRoom(3)"><text x="576" y="540">3</text></g>
-      <g class="hs-num" onclick="goToRoom(4)"><text x="1248" y="324">4</text></g>
+      <g class="hs-num" onclick="goToRoom(1)"><circle class="hs-dot-ring" cx="1632" cy="540"/><circle class="hs-dot" cx="1632" cy="540"/></g>
+      <g class="hs-num" onclick="showSubView('screen-garden')"><circle class="hs-dot-ring" cx="1190" cy="670"/><circle class="hs-dot" cx="1190" cy="670"/></g>
+      <g class="hs-num" onclick="goToRoom(3)"><circle class="hs-dot-ring" cx="576" cy="540"/><circle class="hs-dot" cx="576" cy="540"/></g>
+      <g class="hs-num" onclick="goToRoom(4)"><circle class="hs-dot-ring" cx="1248" cy="324"/><circle class="hs-dot" cx="1248" cy="324"/></g>
     </svg>
   </div>
 
@@ -1264,8 +1274,8 @@ html[data-mode="day"]   #daynight-toggle .dn-moon { display: none; }
         <ellipse cx="922" cy="292" rx="120" ry="55" fill="#ff9020" opacity="0.55" style="filter: blur(28px);"/>
         <ellipse cx="922" cy="292" rx="55"  ry="28" fill="#ffd070" opacity="0.6"  style="filter: blur(10px);"/>
       </g>
-      <g class="hs-num" onclick="goToRoom(4)"><text x="346" y="486">4</text></g>
-      <g class="hs-num" onclick="goToRoom(1)"><text x="922" y="292">1</text></g>
+      <g class="hs-num" onclick="goToRoom(4)"><circle class="hs-dot-ring" cx="346" cy="486"/><circle class="hs-dot" cx="346" cy="486"/></g>
+      <g class="hs-num" onclick="goToRoom(1)"><circle class="hs-dot-ring" cx="922" cy="292"/><circle class="hs-dot" cx="922" cy="292"/></g>
     </svg>
   </div>
 
@@ -1281,7 +1291,7 @@ html[data-mode="day"]   #daynight-toggle .dn-moon { display: none; }
         <ellipse cx="864" cy="216" rx="180" ry="65" fill="#ffd070" opacity="0.4"  style="filter: blur(40px);"/>
         <ellipse cx="864" cy="216" rx="90"  ry="32" fill="#ffe6a0" opacity="0.55" style="filter: blur(18px);"/>
       </g>
-      <g class="hs-num" onclick="goToRoom(3)"><text x="864" y="216">3</text></g>
+      <g class="hs-num" onclick="goToRoom(3)"><circle class="hs-dot-ring" cx="864" cy="216"/><circle class="hs-dot" cx="864" cy="216"/></g>
     </svg>
   </div>
 
